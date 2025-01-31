@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello-world-nodejs
+  namespace: argocd  # ArgoCD's namespace
+spec:
+  project: default
+  source:
+    repoURL: https://gitlab.com/mofazack/hello-world-nodejs.git 
+    path: gitops  # Path to the GitOps folder
+    targetRevision: main  # Branch to monitor
+  destination:
+    server: https://kubernetes.default.svc  # In-cluster Kubernetes API server
+    namespace: default  # Namespace to deploy the app
+  syncPolicy:
+    automated:
+      prune: true  # Automatically delete resources if they are removed from Git
+      selfHeal: true  # Automatically correct drift in the cluster
